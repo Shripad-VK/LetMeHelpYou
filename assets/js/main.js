@@ -33,61 +33,88 @@
 	// Forms.
 		var $form = $('form');
 
-		// Auto-resizing textareas.
-			$form.find('textarea').each(function() {
+	// Form Submit
+	$( "#questions" ).submit(function( event ) {
+		var name = $("#name").val();
+		var contact = $("#phone").val();
+		var message = $("#message").val();
 
-				var $this = $(this),
-					$wrapper = $('<div class="textarea-wrapper"></div>'),
-					$submits = $this.find('input[type="submit"]');
 
-				$this
-					.wrap($wrapper)
-					.attr('rows', 1)
-					.css('overflow', 'hidden')
-					.css('resize', 'none')
-					.on('keydown', function(event) {
+		var formURL="https://docs.google.com/forms/d/e/1FAIpQLScGfmelKDx6QONHzFADQKiS2OmITrUrMT9v_fgf6mVDOPTfVQ/formResponse?";
 
-						if (event.keyCode == 13
-						&&	event.ctrlKey) {
+		$.ajax({
+			url: formURL,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			data: "entry.106195202"+name+"&entry.435681918="+contact+"&entry.1085131559="+message,
+			type: 'GET',
+			success: function (resp) {
+				alert("Your query is submitted.");
+			},
+			error: function(e) {
+				alert('Error: '+e);
+			}  
+		});
 
-							event.preventDefault();
-							event.stopPropagation();
+		event.preventDefault();
+	});
+	
+	// Auto-resizing textareas.
+		$form.find('textarea').each(function() {
 
-							$(this).blur();
+			var $this = $(this),
+				$wrapper = $('<div class="textarea-wrapper"></div>'),
+				$submits = $this.find('input[type="submit"]');
 
-						}
+			$this
+				.wrap($wrapper)
+				.attr('rows', 1)
+				.css('overflow', 'hidden')
+				.css('resize', 'none')
+				.on('keydown', function(event) {
 
-					})
-					.on('blur focus', function() {
-						$this.val($.trim($this.val()));
-					})
-					.on('input blur focus --init', function() {
+					if (event.keyCode == 13
+					&&	event.ctrlKey) {
 
-						$wrapper
-							.css('height', $this.height());
+						event.preventDefault();
+						event.stopPropagation();
 
+						$(this).blur();
+
+					}
+
+				})
+				.on('blur focus', function() {
+					$this.val($.trim($this.val()));
+				})
+				.on('input blur focus --init', function() {
+
+					$wrapper
+						.css('height', $this.height());
+
+					$this
+						.css('height', 'auto')
+						.css('height', $this.prop('scrollHeight') + 'px');
+
+				})
+				.on('keyup', function(event) {
+
+					if (event.keyCode == 9)
 						$this
-							.css('height', 'auto')
-							.css('height', $this.prop('scrollHeight') + 'px');
+							.select();
 
-					})
-					.on('keyup', function(event) {
+				})
+				.triggerHandler('--init');
 
-						if (event.keyCode == 9)
-							$this
-								.select();
+			// Fix.
+				if (browser.name == 'ie'
+				||	browser.mobile)
+					$this
+						.css('max-height', '10em')
+						.css('overflow-y', 'auto');
 
-					})
-					.triggerHandler('--init');
-
-				// Fix.
-					if (browser.name == 'ie'
-					||	browser.mobile)
-						$this
-							.css('max-height', '10em')
-							.css('overflow-y', 'auto');
-
-			});
+		});
 
 	// Menu.
 		var $menu = $('#menu');
