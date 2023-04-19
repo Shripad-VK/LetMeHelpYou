@@ -48,7 +48,7 @@
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
 			data: "entry.106195202"+name+"&entry.435681918="+contact+"&entry.1085131559="+message,
-			type: 'GET',
+			type: 'POST',
 			success: function (resp) {
 				alert("Your query is submitted.");
 			},
