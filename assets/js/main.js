@@ -36,26 +36,17 @@
 	// Form Submit
 	$( "#questions" ).submit(function( event ) {
 		var name = $("#name").val();
-		var contact = $("#phone").val();
-		var message = $("#message").val();
+		var qtitle = $("#qtitle").val();
+		var qmessage = $("#qmessage").val();
+		var urlString = "*LetMeHelpYou* \n"+
+		"*Name :* "+name+" \n" +
+		"*Title :* "+qtitle+" \n" +
+		"*Description :* "+qmessage+" \n" +
+		"*Thanks!*";
 
-
-		var formURL="https://docs.google.com/forms/d/e/1FAIpQLScGfmelKDx6QONHzFADQKiS2OmITrUrMT9v_fgf6mVDOPTfVQ/formResponse?";
-
-		$.ajax({
-			url: formURL,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			data: "entry.106195202"+name+"&entry.435681918="+contact+"&entry.1085131559="+message,
-			type: 'POST',
-			success: function (resp) {
-				alert("Your query is submitted.");
-			},
-			error: function(e) {
-				alert('Error: '+e);
-			}  
-		});
+		var formURL="https://wa.me/918446838361?text="+encodeURI(urlString);
+		
+		window.open(formURL);
 
 		event.preventDefault();
 	});
